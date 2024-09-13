@@ -7,6 +7,7 @@ import (
 
 // 고루틴으로 처리할 작업 (1초 대기)
 func task(id string, count int) {
+	fmt.Printf("%s : %d번 시작\n", id, count)
 	time.Sleep(1 * time.Second) // 1초 대기
 	fmt.Printf("%s : %d번 완료\n", id, count)
 }
@@ -29,6 +30,7 @@ func main() {
 	// 동기적 작업
 	withoutGoroutines()
 
+	fmt.Println("-----------------------------")
 	// 고루틴을 사용한 동시 작업
 	withGoroutines()
 

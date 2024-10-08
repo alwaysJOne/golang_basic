@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +25,7 @@ func weatherAPIData() (ApiResponse, error) {
 	params.Add("numOfRows", "10")                                                                                        // 가져올 데이터 개수
 	params.Add("pageNo", "1")                                                                                            // 페이지 번호
 	params.Add("dataType", "JSON")                                                                                       // 응답 데이터 형식
-	params.Add("base_date", tim.Now().Format("20060102"))                                                                // 현재 날짜 (YYYYMMDD 형식)
+	params.Add("base_date", time.Now().Format("20060102"))                                                               // 현재 날짜 (YYYYMMDD 형식)
 	params.Add("base_time", "0600")                                                                                      // 6시 기준 예보 시간
 	params.Add("nx", "60")                                                                                               // 서울의 X 좌표 (60)
 	params.Add("ny", "127")                                                                                              // 서울의 Y 좌표 (127)

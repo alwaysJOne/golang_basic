@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -15,7 +14,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, Web!")
 }
 
-func weatherAPIData() (ApiResponse, error) {
+func weatherAPIData() (string, error) {
 	// API의 기본 URL (초단기 실황 조회)
 	baseURL := "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"
 
@@ -36,7 +35,7 @@ func weatherAPIData() (ApiResponse, error) {
 	// API 호출 (HTTP GET 요청)
 	resp, err := http.Get(finalURL)
 	if err != nil {
-		return ApiResponse{}, err // 에러 발생 시 빈 응답 반환
+		return "", err // 에러 발생 시 빈 응답 반환
 	}
 	defer resp.Body.Close()
 
@@ -52,42 +51,21 @@ func weatherAPIData() (ApiResponse, error) {
 			if err == io.EOF { // 데이터를 모두 읽으면 종료
 				break
 			}
-			return ApiResponse{}, err
+			return "", err // 에러가 발생하면 반환
 		}
-		responseData += string(line)
+		responseData += string(line) // 응답 데이터를 추가
 	}
 
-	// JSON 데이터를 파싱하여 구조체로 변환
-	var rawResponse map[string]interface{}
-	err = json.Unmarshal([]byte(responseData), &rawResponse)
-	if err != nil {
-		return ApiResponse{}, err
-	}
-
-	fmt.Println(rawResponse) // 원시 응답 출력 (디버깅용)
-
-	// 날씨 데이터를 가공하여 WeatherItem 구조체 목록으로 변환
-	var weatherItems []WeatherItem
-	if body, ok := rawResponse["response"].(map[string]interface{})["body"].(map[string]interface{})["items"].(map[string]interface{})["item"].([]interface{}); ok {
-		for _, item := range body {
-			if itemData, ok := item.(map[string]interface{}); ok {
-				category := itemData["category"].(string)   // 카테고리 (예: PTY, REH 등)
-				obsrValue := itemData["obsrValue"].(string) // 관측 값 (예: 12.8 등)
-
-				// 한글로 번역된 카테고리 추가
-				translatedCategory := categoryTranslation[category]
-
-				// WeatherItem 구조체에 저장
-				weatherItems = append(weatherItems, WeatherItem{
-					Category: translatedCategory,
-					ObsValue: obsrValue,
-				})
-			}
-		}
-	}
+	return responseData, nil // 응답 데이터와 nil 반환
 }
 
 func main() {
+	data, err := weatherAPIData() // API 데이터 호출
+	if err != nil {
+		log.Fatalf("Failed to fetch weather data: %v", err)
+	}
+	fmt.Println("Weather Data:", data) // API 응답 데이터 출력
+
 	http.HandleFunc("/", helloHandler)
 
 	fmt.Println("Server is running on port 8888...")

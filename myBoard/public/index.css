@@ -16,3 +16,19 @@
     width: 65px;
     cursor: pointer;
 }
+
+.btn-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-area .btn{
+    flex: 1;
+}
+
+#board-table tr:hover{
+    cursor: pointer;
+    font-weight: bold;
+}

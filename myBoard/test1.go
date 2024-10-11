@@ -13,6 +13,11 @@ import (
 )
 
 func main() {
+	//CREATE DATABASE test_db;
+	//go get -u gorm.io/gorm
+	//go get -u gorm.io/driver/mysql
+
+	//go mod tidy
 
 	// 데이터베이스 연결 문자열
 	dsn := "root:0000@tcp(127.0.0.1:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
@@ -29,6 +34,10 @@ func main() {
 	}
 
 	fmt.Println("데이터베이스에 성공적으로 연결되었습니다.")
+
+	//gin-gonic
+	//go get -u github.com/gin-gonic/gin
+	//go mod tidy
 
 	r := gin.Default()
 

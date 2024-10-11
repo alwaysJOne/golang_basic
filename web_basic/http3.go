@@ -102,6 +102,20 @@ func weatherAPIData() (weatherResponse, error) {
 		}
 	}
 
+	// weatherResponse 구조체는 응답 전체를 저장합니다.
+	// 응답 코드와 실제 데이터를 포함합니다.
+	// type weatherResponse struct {
+	// 		ResponseCode int         `json:"responseCode"` // HTTP 응답 코드
+	// 		Data         interface{} `json:"data"`         // 날씨 데이터 (WeatherItem 목록)
+	// }
+
+	// weatherResponse 구조체는 응답 전체를 저장합니다.
+	// 응답 코드와 실제 데이터를 포함합니다.
+	// type weatherResponse struct {
+	// 		ResponseCode int         `json:"responseCode"` // HTTP 응답 코드
+	// 		Data         interface{} `json:"data"`         // 날씨 데이터 (WeatherItem 목록)
+	// }
+
 	// 최종 응답 데이터를 ApiResponse 구조체로 반환
 	return weatherResponse{
 		ResponseCode: resp.StatusCode,

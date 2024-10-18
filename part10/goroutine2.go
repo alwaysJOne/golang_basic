@@ -33,6 +33,7 @@ func main() {
 	fmt.Println("-----------------------------")
 	// 고루틴을 사용한 동시 작업
 	withGoroutines()
+	
 
 	time.Sleep(5 * time.Second)
 }
